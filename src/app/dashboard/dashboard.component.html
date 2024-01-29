@@ -1,5 +1,5 @@
 <div class="container">
 	<div class="row justify-content-center align-items-center" >
-		<p *ngFor="let ticket of tickets">{{ ticket.info }} <a href="#editTicket"></a></p> 
+		<p *ngFor="let ticket of tickets"><a [routerLink]="['/edit', ticket.id]">{{ ticket.info }}</a></p> 
 	</div>
 </div>

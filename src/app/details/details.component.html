@@ -1,1 +1,19 @@
-<p>details works!</p>
+<form (ngSubmit)="onSubmit()" #f="ngForm">
+	<div class="row mb-3">
+		<label for="title" class="col-sm-2 col-form-label">Title</label>
+		<div class="col-sm-10">
+			<input id="title" name="title" class="form-control" type="text" ngModel required>
+		</div>
+	</div>
+	<div class="row mb-3">
+		<label for="description" class="col-sm-2 col-form-label">Description</label>
+		<div class="col-sm-10">
+			<textarea id="description" name="description" class="form-control" rows="3" ngModel></textarea>
+		</div>
+	</div>
+	<div class="input-group mb-3">
+		<label for="day" class="col-sm-2 col-form-label">Expire:</label>
+		<input id="expire" name="expire" class="form-control" type="date" ngModel required>
+	</div>
+	<button class="btn btn-primary" type="submit" [disabled]="false && f.invalid">Submit</button>
+</form>

@@ -3,20 +3,27 @@ export class Ticket {
 		public id: number,
 		public title: string,
 		public description: string,
-		public expire: Date,
-		public label: string
+		public expire: Date
 	) {	}
+	get object() {
+		return {
+			title: this.title,
+			description: this.description,
+			//expire: this.expire.toISOString().split('T')[0]
+			expire: null
+		}
+	}
 	get info() {
-		return `Ticket {id: ${this.id}, title: ${this.title}, description: ${this.description}, expire: ${this.expire.toLocaleDateString()}, label: ${this.label}}`
+		return `Ticket {id: ${this.id}, title: ${this.title}, description: ${this.description}, expire: ${this.expire.toLocaleDateString()}}`
 	}
 }
 
 export function fakeTickets() {
 	return [
-		new Ticket(1, 't1', 'd1', new Date(), 'l1'),
-		new Ticket(2, 't2', 'd2', new Date(), 'l2'),
-		new Ticket(3, 't3', 'd3', new Date(), 'l3'),
-		new Ticket(4, 't4', 'd4', new Date(), 'l4'),
-		new Ticket(5, 't5', 'd5', new Date(), 'l5'),
+		{title: 't1', description: 'd1', expire: new Date()},
+		{title: 't2', description: 'd2', expire: new Date()},
+		{title: 't3', description: 'd3', expire: new Date()},
+		{title: 't4', description: 'd4', expire: new Date()},
+		{title: 't5', description: 'd5', expire: new Date()},
 	]
 }

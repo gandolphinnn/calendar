@@ -7,6 +7,6 @@ import { TicketManagerService } from '../services/ticket-manager.service';
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
-	tickets = this.ticketManager.tickets
+	tickets = this.ticketManager.readTickets
 	constructor(private ticketManager: TicketManagerService) {}
 }
