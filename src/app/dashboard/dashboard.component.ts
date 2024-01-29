@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { TicketManagerService } from '../services/ticket-manager.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -6,9 +7,6 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
-	@Output('customEvent') event = new EventEmitter<number>();
-
-	onClick() {
-		this.event.emit(5);
-	}
+	tickets = this.ticketManager.tickets
+	constructor(private ticketManager: TicketManagerService) {}
 }

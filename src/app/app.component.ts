@@ -8,10 +8,4 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 })
 export class AppComponent {
   title = 'calendar';
-
-
-	onEvent(n: number) {
-		console.log(n);
-		
-	}
 }
