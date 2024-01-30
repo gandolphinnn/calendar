@@ -27,8 +27,7 @@ export class DetailsComponent implements AfterViewInit {
 		)
 		console.log(this.form.value);
 		console.log(this.ticketRef.object);
-		//todo not working
-		this.form.setValue(this.ticketRef.object);
+		this.form.setValue(this.ticketRef.object); //todo not working
 		console.log(this.form.value);
 	}
 	onSubmit() {
