@@ -1,53 +1,44 @@
 import { Injectable } from '@angular/core';
-import { Ticket, fakeTickets } from '../backend/ticket'
-export { Ticket } from '../backend/ticket'
 
 @Injectable({
   providedIn: 'root'
 })
 export class TicketManagerService {
-	private _savedTickets: Ticket[] = [];
-	private _pendingTickets: Ticket[] = [];
+	private tickets: Ticket[] = [];
 	get readTickets() {
-		return [...this._savedTickets];
-	}
-
-	private _identity = 0
-	get identity() {
-		return this._identity += 1;
-	}
-
-	constructor() {
-		const tickets = fakeTickets();
-		tickets.forEach(ticket => {
-			this.addFull(ticket.title, ticket.description, ticket.expire);
-		});
-		this.saveChanges();
-	}
-
-	addEmpty() {
-		const ticket = new Ticket(this.identity, '', '', null);
-		this._pendingTickets.push(ticket);
-		return ticket;
-	}
-	addFull(title: string, description: string, expire: Date) {
-		const ticket = new Ticket(this.identity, title, description, expire);
-		this._pendingTickets.push(ticket);
-		return ticket;
+		return [...this.tickets];
 	}
 
 	getTicketById(id: number) {
-		if (id === undefined) {
-			return this.addEmpty()
-		}
-		return this._pendingTickets.filter(ticket => ticket.id == id)[0];
+
+		return this.tickets[0] //todo;
 	}
 
 	saveChanges() {
 		try {
-			this._savedTickets = [...this._pendingTickets];
+			this.tickets = [...this.tickets];
 		} catch (error) {
 			console.log(error);
 		}
+	}
+}
+
+export class Ticket {
+	constructor (
+		public id: number,
+		public title: string,
+		public description: string,
+		public expire: Date
+	) {	}
+	get object() {
+		return {
+			title: this.title,
+			description: this.description,
+			//expire: this.expire.toISOString().split('T')[0]
+			expire: null
+		}
+	}
+	get info() {
+		return `Ticket {id: ${this.id}, title: ${this.title}, description: ${this.description}, expire: ${this.expire.toLocaleDateString()}}`
 	}
 }
