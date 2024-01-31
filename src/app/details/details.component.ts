@@ -1,9 +1,7 @@
-import { Component, ElementRef, Input, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { TicketManagerService, Ticket, TicketObj } from '../services/ticket-manager.service';
-import { arrPivot, coalesce, isNull } from '@gandolphinnn/utils'
+import { TicketManagerService, Ticket } from '../services/ticket-manager.service';
 import { NgForm } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-details',
@@ -12,26 +10,32 @@ import { HttpClient } from '@angular/common/http';
 })
 export class DetailsComponent implements AfterViewInit {
 	@ViewChild('f') form: NgForm;
-	activeTicket = new Ticket();
+	activeTicket: Ticket;
+	mode: 'edit' | 'add';
 
 	constructor(
-		private ticketManagerService: TicketManagerService,
+		private ticketManager: TicketManagerService,
 		private router: Router,
 		private activatedRoute: ActivatedRoute,
-		private http: HttpClient
 	) {}
 	
 	ngAfterViewInit() {
-		
-		this.activatedRoute.params.subscribe(
-			(params: Params) => {
-				this.ticketManagerService.setTicketById(this.activeTicket, params['id']);
+		this.activatedRoute.url.subscribe(urlSegment => {
+			this.mode = <'edit' | 'add'>urlSegment[0].path;
+			if (this.mode === 'edit') {
+				const id = parseInt(urlSegment[1].path);
+				if (id) {
+					this.ticketManager
+						.getTicketById(id)
+						.subscribe(ticket => {
+							try {
+								this.activeTicket = ticket;
+								this.form.setValue(this.activeTicket.object);
+							} catch (error) {} //? Error handled in the pipe
+						});
+				}
 			}
-		)
-		/*console.log(this.form.value);
-		console.log(this.activeTicket);
-		//this.form.setValue(this.activeTicket.object); //todo not working
-		console.log(this.form.value); */
+		})
 	}
 	onSubmit() {
 		console.log(this.form.value);
