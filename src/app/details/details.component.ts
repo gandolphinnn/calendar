@@ -1,8 +1,9 @@
 import { Component, ElementRef, Input, AfterViewInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { TicketManagerService, Ticket } from '../services/ticket-manager.service';
+import { TicketManagerService, Ticket, TicketObj } from '../services/ticket-manager.service';
 import { arrPivot, coalesce, isNull } from '@gandolphinnn/utils'
 import { NgForm } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-details',
@@ -10,25 +11,27 @@ import { NgForm } from '@angular/forms';
   styleUrl: './details.component.css'
 })
 export class DetailsComponent implements AfterViewInit {
-	ticketRef: Ticket;
 	@ViewChild('f') form: NgForm;
+	activeTicket = new Ticket();
 
 	constructor(
 		private ticketManagerService: TicketManagerService,
 		private router: Router,
-		private activatedRoute: ActivatedRoute
+		private activatedRoute: ActivatedRoute,
+		private http: HttpClient
 	) {}
 	
 	ngAfterViewInit() {
+		
 		this.activatedRoute.params.subscribe(
 			(params: Params) => {
-				this.ticketRef = this.ticketManagerService.getTicketById(params['id']);
+				this.ticketManagerService.setTicketById(this.activeTicket, params['id']);
 			}
 		)
-		console.log(this.form.value);
-		console.log(this.ticketRef.object);
-		this.form.setValue(this.ticketRef.object); //todo not working
-		console.log(this.form.value);
+		/*console.log(this.form.value);
+		console.log(this.activeTicket);
+		//this.form.setValue(this.activeTicket.object); //todo not working
+		console.log(this.form.value); */
 	}
 	onSubmit() {
 		console.log(this.form.value);
@@ -37,10 +40,10 @@ export class DetailsComponent implements AfterViewInit {
 		this.form.value.expire = date.toISOString().split('T')[0]
 		console.log()
 		this.form.setValue(this.form.value)
-		/*this.ticketRef.title = this.form.value.title;
-		this.ticketRef.description = this.form.value.description;
-		this.ticketRef.expire = this.form.value.expire;
+		this.activeTicket.title = this.form.value.title;
+		this.activeTicket.description = this.form.value.description;
+		this.activeTicket.expire = this.form.value.expire;
 		this.router.navigate(['/'])
-		*/
+		
 	}
 }

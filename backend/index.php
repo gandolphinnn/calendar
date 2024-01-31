@@ -26,7 +26,7 @@ class RestService {
 
 	public function parseRequest() {
 		try {
-			debug($_SERVER['REQUEST_METHOD']);
+			//debug($_SERVER['REQUEST_METHOD']);
 			$ticketManager = new TicketManager();
 			switch($_SERVER['REQUEST_METHOD']) {
 				case 'GET': {
